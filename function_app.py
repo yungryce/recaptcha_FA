@@ -3,6 +3,7 @@ import os
 import json
 import azure.functions as func
 from google.cloud import recaptchaenterprise_v1
+from google.oauth2 import service_account
 from google.cloud.recaptchaenterprise_v1 import Assessment
 
 
@@ -19,8 +20,11 @@ def create_assessment(project_id: str, recaptcha_key: str, token: str, recaptcha
     Returns:
         Assessment: The assessment result containing the risk score.
     """
+    # Get service account credentials from the environment variable
+    service_account_info = json.loads(os.getenv('GOOGLE_APPLICATION_CREDENTIALS_JSON'))
+    credentials = service_account.Credentials.from_service_account_info(service_account_info)
 
-    client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+    client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient(credentials=credentials)
 
     # Set the properties of the event to be tracked.
     event = recaptchaenterprise_v1.Event()
