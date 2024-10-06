@@ -1,5 +1,6 @@
 import logging
 import os
+import json
 import azure.functions as func
 from google.cloud import recaptchaenterprise_v1
 from google.cloud.recaptchaenterprise_v1 import Assessment
@@ -62,7 +63,13 @@ def verify_recaptcha(req: func.HttpRequest) -> func.HttpResponse:
 
         if not token or not recaptcha_action:
             return func.HttpResponse(
-                "Bad request: Token or action not provided.",
+                json.dumps({
+                    'status': 400,
+                    'message': "Bad request: Token or action not provided.",
+                    'error': None,
+                    'data': None
+                }),
+                mimetype="application/json",
                 status_code=400
             )
 
@@ -75,7 +82,13 @@ def verify_recaptcha(req: func.HttpRequest) -> func.HttpResponse:
 
         if assessment_response is None:
             return func.HttpResponse(
-                "Token verification failed.",
+                json.dumps({
+                    'status': 400,
+                    'message': "Token verification failed.",
+                    'error': None,
+                    'data': None
+                }),
+                mimetype="application/json",
                 status_code=400
             )
 
@@ -88,8 +101,14 @@ def verify_recaptcha(req: func.HttpRequest) -> func.HttpResponse:
             'reasons': [str(reason) for reason in reasons]
         }
 
+        # Return the response in the ResponseInfo format
         return func.HttpResponse(
-            func.json.dumps(result),
+            json.dumps({
+                'status': 200,
+                'message': "Success",
+                'error': None,
+                'data': result
+            }),
             mimetype="application/json",
             status_code=200
         )
@@ -97,7 +116,14 @@ def verify_recaptcha(req: func.HttpRequest) -> func.HttpResponse:
     except Exception as e:
         logging.error(f"Error occurred: {str(e)}")
         return func.HttpResponse(
-            "Internal server error.",
+            json.dumps({
+                'status': 500,
+                'message': "Internal server error.",
+                'error': str(e),
+                'data': None
+            }),
+            mimetype="application/json",
             status_code=500
         )
+
     
