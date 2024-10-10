@@ -132,3 +132,6 @@ def verify_recaptcha(req: func.HttpRequest) -> func.HttpResponse:
         )
 
     
+@app.route(route="test", auth_level=func.AuthLevel.ANONYMOUS)
+def test_function(req: func.HttpRequest) -> func.HttpResponse:
+    return func.HttpResponse("Hello, world!", status_code=200)
