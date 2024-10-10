@@ -64,7 +64,6 @@ def verify_recaptcha(req: func.HttpRequest) -> func.HttpResponse:
         req_body = req.get_json()
         token = req_body.get('token')
         recaptcha_action = req_body.get('action')
-        logging.info(f"Received token: {token}, action: {recaptcha_action}")
 
         if not token or not recaptcha_action:
             return func.HttpResponse(
