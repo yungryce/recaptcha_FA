@@ -106,6 +106,8 @@ def verify_recaptcha(req: func.HttpRequest) -> func.HttpResponse:
             'reasons': [str(reason) for reason in reasons]
         }
 
+        logging.info(f"result: {result}")
+
         # Return the response in the ResponseInfo format
         return func.HttpResponse(
             json.dumps({
