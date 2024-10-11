@@ -131,8 +131,3 @@ def verify_recaptcha(req: func.HttpRequest) -> func.HttpResponse:
             mimetype="application/json",
             status_code=500
         )
-
-    
-@app.route(route="test", auth_level=func.AuthLevel.ANONYMOUS)
-def test_function(req: func.HttpRequest) -> func.HttpResponse:
-    return func.HttpResponse("Hello, world!", status_code=200)
