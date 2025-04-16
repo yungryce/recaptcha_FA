@@ -4,7 +4,6 @@ This document maps specific technical skills to their implementations within thi
 
 ## Azure Functions Development
 - **HTTP-Triggered Function**: [function_app.py](./function_app.py#L31-L92)
-- **Environment Configuration**: [function_app.py](./function_app.py#L52-L53)
 
 ## Security Implementation
 - **reCAPTCHA Integration**: [function_app.py](./function_app.py#L11-L30)
